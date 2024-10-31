@@ -41,3 +41,22 @@
   border: none;
   background: none;
 }
+
+.product-overview .product-title {
+  text-transform: uppercase;
+}
+.product-overview .product-price-wrapper {
+  display: flex;
+}
+.product-overview .product-price-wrapper .product-price {
+  font-size: 18px;
+  line-height: 21px;
+  color: #000000;
+}
+.product-overview .product-price-wrapper .compare-at-price {
+  font-size: 18px;
+  line-height: 21px;
+  text-decoration-line: line-through;
+  color: #898989;
+  margin-right: 6px;
+}

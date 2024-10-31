@@ -48,5 +48,31 @@
 }
 
 .product-overview {
-    
+  .product-title {
+    text-transform: uppercase;
+  }
+
+  .product-price-wrapper {
+    display: flex;
+
+    .product-price {
+      font-size: 18px;
+      line-height: 21px;
+      color: #000000;
+    }
+
+    .compare-at-price {
+      font-size: 18px;
+      line-height: 21px;
+      text-decoration-line: line-through;
+      color: #898989;
+      margin-right: 6px;
+    }
+
+    .sale-label {
+    }
+
+    .discount-label {
+    }
+  }
 }
