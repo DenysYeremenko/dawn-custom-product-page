@@ -1,13 +1,18 @@
 {% assign variant_images = product.images | map: 'src' %}
 {% assign product_tags = product.metafields.custom.product_tag.value %}
+{% assign compare_price = product.compare_at_price | divided_by: 100 %}
+{% assign actual_price = product.price | divided_by: 100 %}
+
+{% assign price_difference = compare_price | minus: actual_price %}
+{% assign percentage_difference = price_difference | times: 100 | divided_by: compare_price %}
 
 <section class="product-section">
   <div class="product-gallery" x-data="Slider()">
     <div class="custom-slider" x-ref="slider">
       {% for image in variant_images %}
-        <div class="custom-slide">
+        <figure class="custom-slide">
           <img class="product-image" src="{{ image | img_url: 'master' }}" alt="{{ image.alt | escape }}">
-        </div>
+        </figure>
       {% endfor %}
     </div>
 
@@ -18,16 +23,108 @@
   </div>
   <div
     class="product-overview"
-    x-data="{ discount: 0 }"
-    x-init="discount = Math.round((({{ product.compare_at_price | default: 0 }} - {{ roduct.price }}) / {{ product.compare_at_price | default: 1 }}) * 100);"
   >
-    <p>{{ product_tags }}</p>
+    <p class="product-tag">{{ product_tags }}</p>
     <h1 class="product-title">{{ product.title }}</h1>
     <div class="product-price-wrapper">
       <p class="compare-at-price">{{ product.compare_at_price | money }}</p>
       <p class="product-price">{{ product.price | money }}</p>
+      {% if percentage_difference > 0 %}
+        <p class="sale-label">SALE</p>
+        <p class="product-discount">SAVE {{ percentage_difference }}%</p>
+      {% endif %}
     </div>
-
-    <p>{{ product.description }}</p>
+    <p class="product-shipping"><span>Shipping</span> calculated at checkout.</p>
+    <p class="product-desc">{{ product.description | strip_html }}</p>
+    <label
+      for="{{ id }}"
+      title="{{ value }}"
+      class="swatch-input__label{% if shape == 'square' %} swatch-input__label--square{% endif %}"
+    >
+      {% render 'swatch', swatch: value.swatch, shape: shape %}
+      <span class="visually-hidden">{{ value }}</span>
+      {{ help_text }}
+    </label>
   </div>
 </section>
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "Default Product Title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "swatch",
+      "name": "Swatch",
+      "settings": [
+        {
+          "type": "select",
+          "id": "shape",
+          "label": "Shape",
+          "options": [
+            {
+              "value": "circle",
+              "label": "Circle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            }
+          ],
+          "default": "circle"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "color"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker Type",
+          "options": [
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            },
+            {
+              "value": "button",
+              "label": "Button"
+            }
+          ],
+          "default": "dropdown"
+        },
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Swatch Shape",
+          "options": [
+            {
+              "value": "circle",
+              "label": "Circle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            }
+          ],
+          "default": "circle"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

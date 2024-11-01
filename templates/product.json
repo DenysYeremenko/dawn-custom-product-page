@@ -3,7 +3,23 @@
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "swatch": {
+          "type": "swatch",
+          "settings": {
+            "shape": "square",
+            "value": "color"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        }
+      }
     }
   },
   "order": [
